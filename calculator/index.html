@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        input{
+            /* border: 2px solid #eee;
+            box-shadow:0px 2px 3px #ccc; */
+            width: 70px;
+            position: relative;
+            top: 100px;
+            left: 450px;
+            font-size: 1.2em;
+            padding: 15px;
+
+        }
+        input:nth-of-type(1){
+            width: 258px;
+        }
+        input:nth-of-type(2),input:nth-of-type(3){
+            width: 144px;
+        }
+        input[type="button"]{
+            background-color: black;
+            color: white;
+        }
+        input[type="text"]{
+            border: 3px solid gray;
+        }
+        
+        /* form{
+            margin: auto;
+            width: 400px;
+            background-color: green;
+        } */
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <form>
+        <input autofocus type="text"> 
+        <br>
+
+        <input onclick="AC()" value="AC" type="button">
+        <input onclick="OFF()" value="OFF" type="button">
+
+        <br>
+
+        <input value=1 type="button">
+        <input value=2 type="button">
+        <input value=3 type="button">
+        <input value="+" type="button">
+
+        <br>
+
+        <input value=4 type="button">
+        <input value=5 type="button">
+        <input value=6 type="button">
+        <input value="-" type="button">
+
+        <br>
+
+        <input value=7 type="button">
+        <input value=8 type="button">
+        <input value=9 type="button">
+        <input value="*" type="button">
+
+        <br>
+
+        <input  value="." type="button">
+        <input value=0 type="button">
+        <input onclick="Answer()" value="=" type="button">
+        <input value="/" type="button">
+
+    </form>
+
+
+
+    <script>
+        // console.log("h")
+
+        // setInterval(function(){
+        //     console.log("ha")
+
+        //     inputs[0].autofocus = true
+        // },1000)
+
+        var inputs  =  document.getElementsByTagName('input')  
+        var clear = false
+        var point = false
+        var valid = true
+        var operator = false
+        var calcOFF = false
+        var answer;
+        var equalTo = false
+
+        for(let i=3; i< inputs.length;i++){
+            // console.log("times")
+            if(i != 17){
+                inputs[i].onclick = showOutput
+            }
+        }
+
+        function AC(){
+            calcOFF = false
+            point = false
+            valid = true
+            clear = true
+            operator = false
+            inputs[0].value = 0
+        }
+
+        function OFF(){
+            calcOFF = true
+            point = false
+            valid = true
+            clear = true
+            operator = false
+            inputs[0].value = null
+        }
+
+
+     
+            
+        function Answer(){
+
+            equalTo = true
+            if(operator){
+                inputs[0].value = "invalid entry"
+            }
+            else{
+                operator = false;
+                answer =  eval(inputs[0].value)
+                inputs[0].value = answer
+                // console.log(typeof(answer))
+                answer = answer.toString()
+                for(let i=0; i<answer.length ; i++){
+                    if(answer[i] == "."){
+                        point = true
+                    }
+                }
+                console.log(answer)
+            }
+
+            // console.log(answer)
+            // inputs[0].value = answer
+
+            // console.log(answer)
+        }
+    function showOutput(){
+
+        // console.log(this.value)
+        equalTo = false
+
+        if(!calcOFF){
+            for(let i=0;i<=9;i++){
+                if(this.value == i && inputs[0].value == 0){
+                    inputs[0].value = null
+                }
+                if(this.value == i ){
+                    operator = false
+                    valid = true
+                }
+                if( equalTo && this.value == i ){
+                    inputs[0].value = null
+                }
+            }
+
+            if(operator && (this.value == "+" || this.value == "-" || this.value == "*" || this.value == "/" )){
+                valid = false
+            }
+            if(!operator && (this.value == "+" || this.value == "-" || this.value == "*" || this.value == "/")){
+                operator =  true
+                point = false
+                valid = true
+            }
+            console.log(point)
+            if(point && this.value == "." && !equalTo){
+                valid = false
+            }
+            if(!point &&  this.value == "."){
+                // console.log("this is point")
+                // valid = false
+                valid = true
+                point = true
+            }
+
+            if(valid){
+                inputs[0].value += this.value
+            }
+
+            // console.log(operator)
+            // console.log(this.value)
+        } 
+    }
+    </script>
+</body>
+</html>
